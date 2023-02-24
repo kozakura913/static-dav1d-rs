@@ -136,15 +136,10 @@ pub const DAV1D_PRIMARY_REF_NONE: usize = 7;
 pub const DAV1D_REFS_PER_FRAME: usize = 7;
 pub const DAV1D_TOTAL_REFS_PER_FRAME: usize = DAV1D_REFS_PER_FRAME + 1;
 
-#[cfg(feature = "v1_1")]
 pub const DAV1D_DECODEFRAMETYPE_ALL: Dav1dDecodeFrameType = 0;
-#[cfg(feature = "v1_1")]
 pub const DAV1D_DECODEFRAMETYPE_REFERENCE: Dav1dDecodeFrameType = 1;
-#[cfg(feature = "v1_1")]
 pub const DAV1D_DECODEFRAMETYPE_INTRA: Dav1dDecodeFrameType = 2;
-#[cfg(feature = "v1_1")]
 pub const DAV1D_DECODEFRAMETYPE_KEY: Dav1dDecodeFrameType = 3;
-#[cfg(feature = "v1_1")]
 pub type Dav1dDecodeFrameType = c_uint;
 
 // Conversion of the C DAV1D_ERR macro
@@ -611,12 +606,8 @@ pub struct Dav1dSettings {
     pub strict_std_compliance: c_int,
     pub output_invisible_frames: c_int,
     pub inloop_filters: Dav1dInloopFilterType,
-    #[cfg(feature = "v1_1")]
     pub decode_frame_type: Dav1dDecodeFrameType,
-    #[cfg(feature = "v1_1")]
     pub reserved: [u8; 20usize],
-    #[cfg(not(feature = "v1_1"))]
-    pub reserved: [u8; 16usize],
 }
 
 #[repr(transparent)]
@@ -647,7 +638,6 @@ extern "C" {
         out: *mut Dav1dDataProps,
     ) -> c_int;
 
-    #[cfg(feature = "v1_1")]
     pub fn dav1d_get_frame_delay(c: *mut Dav1dContext) -> c_int;
 
     pub fn dav1d_apply_grain(
