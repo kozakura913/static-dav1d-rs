@@ -256,7 +256,19 @@ unsafe extern "C" fn release_wrapped_data<T: AsRef<[u8]>>(_data: *const u8, cook
     let buf = Box::from_raw(cookie as *mut T);
     drop(buf);
 }
-
+pub fn parse_sequence_header<T: AsRef<[u8]> + Send + 'static>(buf:T)->Result<Dav1dSequenceHeader,i32>{
+	let buf = Box::new(buf);
+	let slice = (*buf).as_ref();
+	unsafe{
+		let mut out=mem::zeroed();
+		let state=dav1d_parse_sequence_header(&mut out,slice.as_ptr(),slice.len()) as i32;
+		if state==0{
+			Ok(out)
+		}else{
+			Err(state)
+		}
+	}
+}
 impl Decoder {
     /// Creates a new [`Decoder`] instance with given [`Settings`].
     pub fn with_settings(settings: &Settings) -> Result<Self, Error> {
@@ -294,7 +306,6 @@ impl Decoder {
             }
         }
     }
-
     /// Send new AV1 data to the decoder.
     ///
     /// After this returned `Ok(())` or `Err([Error::Again])` there might be decoded frames
