@@ -14,7 +14,7 @@ Customized cross compilation with "*.meson" path specified in "DAV1D_CROSS_FILE"
 
 ## Supported versions
 
-Built-in dav1d version is 1.1.0
+The bindings require dav1d 1.3.0
 
 ## TODO
 - [x] Simple bindings
